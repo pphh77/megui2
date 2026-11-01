@@ -94,6 +94,16 @@ namespace MeGUI.packages.audio.ezcdaac
             }
         }
 
+        private EzcdAacProfile SelectedProfile
+        {
+            get
+            {
+                if (cbProfile.SelectedItem == null)
+                    return EzcdAacProfile.XHE;
+                return (EzcdAacProfile)(cbProfile.SelectedItem as EnumProxy).RealValue;
+            }
+        }
+
         private void updateTrackBar()
         {
             _bUpdatingTrackBar = true;
@@ -101,9 +111,13 @@ namespace MeGUI.packages.audio.ezcdaac
             {
                 if (SelectedMode == EzcdAacMode.CBR)
                 {
+                    // the AAC back-end refuses HE-AAC / HE-AACv2 above 128 / 64 kbit/s
+                    int iMaximum = EZCDAACSettings.GetMaximumBitrate(SelectedProfile);
+                    if (bitrate > iMaximum)
+                        bitrate = iMaximum;
                     trackBar.Minimum = EZCDAACSettings.MinimumBitrate;
-                    trackBar.Maximum = EZCDAACSettings.MaximumBitrate;
-                    trackBar.TickFrequency = EZCDAACSettings.MaximumBitrate / 16;
+                    trackBar.Maximum = iMaximum;
+                    trackBar.TickFrequency = (iMaximum - trackBar.Minimum) / 8;
                     trackBar.Value = Math.Max(Math.Min(bitrate, trackBar.Maximum), trackBar.Minimum);
                 }
                 else

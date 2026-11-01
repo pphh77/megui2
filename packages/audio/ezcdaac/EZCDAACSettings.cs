@@ -59,10 +59,32 @@ namespace MeGUI
         public const int MinimumQuality = 0;
         public const int MaximumQuality = 6;
         /// <summary>
-        /// lowest / highest CBR bitrate (kbit/s) offered in the UI
+        /// lowest CBR bitrate (kbit/s) offered in the UI
         /// </summary>
         public const int MinimumBitrate = 16;
+        /// <summary>
+        /// highest CBR bitrate (kbit/s) offered in the UI
+        /// </summary>
         public const int MaximumBitrate = 512;
+
+        /// <summary>
+        /// highest CBR bitrate the encoder actually accepts for a profile.
+        /// the AAC back-end (encm_aacf) gives up much earlier than the xHE-AAC
+        /// one and refuses to initialize instead of clamping:
+        ///   HE-AACv2 : 64 kbit/s (stereo only)
+        ///   HE-AAC   : 64 kbit/s mono / 128 kbit/s stereo
+        ///   xHE-AAC  : 384 kbit/s at 44.1/48 kHz
+        /// </summary>
+        public static int GetMaximumBitrate(EzcdAacProfile eProfile)
+        {
+            switch (eProfile)
+            {
+                case EzcdAacProfile.HEV2: return 64;
+                case EzcdAacProfile.HE: return 128;
+                case EzcdAacProfile.XHE: return 384;
+                default: return MaximumBitrate;
+            }
+        }
 
         public EZCDAACSettings()
             : base(ID, AudioCodec.AAC, AudioEncoderType.EZCDAAC, 128, BitrateManagementMode.VBR)
@@ -134,6 +156,23 @@ namespace MeGUI
         public bool IsStereoRequired
         {
             get { return profile == EzcdAacProfile.HEV2; }
+        }
+
+        /// <summary>
+        /// highest CBR bitrate valid for the selected profile
+        /// </summary>
+        public int MaximumBitrateForProfile
+        {
+            get { return GetMaximumBitrate(profile); }
+        }
+
+        /// <summary>
+        /// keeps the CBR bitrate inside the range the selected profile accepts
+        /// </summary>
+        public override int Bitrate
+        {
+            get { return base.Bitrate; }
+            set { base.Bitrate = Math.Min(value, MaximumBitrateForProfile); }
         }
     }
 }

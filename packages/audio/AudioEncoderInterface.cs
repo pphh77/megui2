@@ -460,6 +460,31 @@ namespace MeGUI
                 su.HasError = true;
         }
 
+        /// <summary>
+        /// explains a failed run with the last line the encoder wrote to stderr.
+        /// EZCD-AAC reports the real reason there (missing DLL, unsupported
+        /// profile/bitrate combination, incomplete PCM frame, ...) but always
+        /// exits with the generic code 1.
+        /// </summary>
+        private string GetEncoderErrorHint()
+        {
+            if (!(audioJob.Settings is EZCDAACSettings) || String.IsNullOrEmpty(_encoderStdErr))
+                return String.Empty;
+
+            string[] arrLines = _encoderStdErr.Split(new char[] { '\r', '\n' }, StringSplitOptions.RemoveEmptyEntries);
+            for (int i = arrLines.Length - 1; i >= 0; i--)
+            {
+                string strLine = arrLines[i].Trim();
+                if (strLine.Length == 0
+                    || strLine.StartsWith("ezcd-aac ") || strLine.StartsWith("enc:") || strLine.StartsWith("in :")
+                    || strLine.StartsWith("out:") || strLine.StartsWith("-v ") || strLine.StartsWith("-b ")
+                    || strLine.StartsWith("-c ") || strLine.StartsWith("-p ") || strLine.StartsWith("-r "))
+                    continue;
+                return " (" + strLine + ")";
+            }
+            return String.Empty;
+        }
+
         private void Encode()
         {
             string fileErr = MainForm.verifyInputFile(this.audioJob.Input);
@@ -521,7 +546,7 @@ namespace MeGUI
                                         if (_encoderProcess != null && _encoderProcess.HasExited)
                                         {
                                             string strError = WindowUtil.GetErrorText(_encoderProcess.ExitCode);
-                                            throw new ApplicationException("Abnormal encoder termination. Exit code: " + strError);
+                                            throw new ApplicationException("Abnormal encoder termination. Exit code: " + strError + GetEncoderErrorHint());
                                         }
                                         int nHowMany = Math.Min((int)(a.SamplesCount - frameSample), samplesPerChunk);
                                         a.ReadAudio(address, frameSample, nHowMany);
@@ -557,7 +582,7 @@ namespace MeGUI
                                 if (0 != _encoderProcess.ExitCode)
                                 {
                                     string strError = WindowUtil.GetErrorText(_encoderProcess.ExitCode);
-                                    throw new ApplicationException("Abnormal encoder termination. Exit code: " + strError);
+                                    throw new ApplicationException("Abnormal encoder termination. Exit code: " + strError + GetEncoderErrorHint());
                                 }
                             }
                          finally
