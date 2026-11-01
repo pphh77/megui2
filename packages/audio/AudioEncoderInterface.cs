@@ -78,6 +78,11 @@ namespace MeGUI
         private string _encoderExecutablePath;
         private string _encoderCommandLine;
         private HeaderType _sendWavHeaderToEncoderStdIn;
+        /// <summary>
+        /// pad the WAV data chunk to an even length as required by the RIFF specification.
+        /// encoders that treat any byte after the last complete frame as an error have to disable this.
+        /// </summary>
+        private bool _padWavDataChunkToEvenLength = true;
 
         private int _sampleRate;
 
@@ -536,7 +541,10 @@ namespace MeGUI
                                 }
 
                                 SetProgress(1M);
-                                if (_sendWavHeaderToEncoderStdIn != HeaderType.NONE && a.BytesPerSample % 2 == 1)
+                                // RIFF chunks are padded to an even length, but only the data chunk
+                                // length matters, not the size of a single sample (24 bit stereo is even).
+                                if (_padWavDataChunkToEvenLength && _sendWavHeaderToEncoderStdIn != HeaderType.NONE
+                                    && (a.AudioSizeInBytes % 2) == 1)
                                     target.WriteByte(0);
                                 }
                                 
@@ -2515,6 +2523,8 @@ function c3_dpl2(clip a)
                 EZCDAACSettings oSettings = audioJob.Settings as EZCDAACSettings;
                 _encoderExecutablePath = this._settings.EzcdAac.Path;
                 _sendWavHeaderToEncoderStdIn = HeaderType.WAV;
+                // the encoder rejects any byte after the last complete PCM frame
+                _padWavDataChunkToEvenLength = false;
 
                 script.Append("32==Audiobits(last)?ConvertAudioTo24bit(last):last" + Environment.NewLine);
 
