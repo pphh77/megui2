@@ -66,7 +66,8 @@ namespace MeGUI
                 ((j as AudioJob).Settings is OpusSettings) ||
                 ((j as AudioJob).Settings is FDKAACSettings) ||
                 ((j as AudioJob).Settings is FFAACSettings) ||
-                ((j as AudioJob).Settings is ExhaleSettings)))
+                ((j as AudioJob).Settings is ExhaleSettings) ||
+                ((j as AudioJob).Settings is EZCDAACSettings)))
                 return new AviSynthAudioEncoder(mf.Settings);
             return null;
         }
@@ -2507,6 +2508,44 @@ function c3_dpl2(clip a)
                 if (!String.IsNullOrEmpty(oSettings.CustomEncoderOptions))
                     sb.Append(" " + oSettings.CustomEncoderOptions.Trim());
                 sb.Append(" \"{0}\"");
+            }
+
+            else if (audioJob.Settings is EZCDAACSettings)
+            {
+                EZCDAACSettings oSettings = audioJob.Settings as EZCDAACSettings;
+                _encoderExecutablePath = this._settings.EzcdAac.Path;
+                _sendWavHeaderToEncoderStdIn = HeaderType.WAV;
+
+                script.Append("32==Audiobits(last)?ConvertAudioTo24bit(last):last" + Environment.NewLine);
+
+                // encoder back-end: -e xheaacf = xHE-AAC, -e aacf = AAC-LC / HE-AAC / HE-AACv2
+                if (!oSettings.CustomEncoderOptions.Contains("-e ") && !oSettings.CustomEncoderOptions.Contains("-p "))
+                {
+                    switch (oSettings.Profile)
+                    {
+                        case EzcdAacProfile.AACLC: sb.Append(" -e aacf -p lc"); break;
+                        case EzcdAacProfile.HE: sb.Append(" -e aacf -p he"); break;
+                        case EzcdAacProfile.HEV2: sb.Append(" -e aacf -p hev2"); break;
+                        default: sb.Append(" -e xheaacf"); break;
+                    }
+                }
+
+                // HE-AACv2 requires a stereo input
+                if (oSettings.IsStereoRequired && !oSettings.CustomEncoderOptions.Contains("-c "))
+                    sb.Append(" -c 2");
+
+                if (!oSettings.CustomEncoderOptions.Contains("-v ") && !oSettings.CustomEncoderOptions.Contains("-b "))
+                {
+                    if (oSettings.Mode == EzcdAacMode.CBR)
+                        sb.AppendFormat(CultureInfo.InvariantCulture, " -b {0}", oSettings.Bitrate * 1000);
+                    else
+                        sb.AppendFormat(CultureInfo.InvariantCulture, " -v {0}", oSettings.Quality);
+                }
+
+                if (!String.IsNullOrEmpty(oSettings.CustomEncoderOptions))
+                    sb.Append(" " + oSettings.CustomEncoderOptions.Trim());
+
+                sb.Append(" -i - -o \"{0}\"");
             }
 
             else if (audioJob.Settings is OpusSettings)

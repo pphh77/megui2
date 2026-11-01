@@ -61,6 +61,7 @@ namespace MeGUI
                        defaultLanguage1, defaultLanguage2, afterEncodingCommand, videoExtension, audioExtension,
                        strEac3toLastFolderPath, strEac3toLastFilePath, strEac3toLastDestinationPath, tempDirMP4,
                        fdkAacPath, httpproxyaddress, httpproxyport, httpproxyuid, httpproxypwd, defaultOutputDir, exhalePath,
+                       ezcdAacPath,
                        appendToForcedStreams, lastUsedOneClickFolder, lastUpdateServer, chapterCreatorSortString, muxInputPath, muxOutputPath,
                        qaacPath;
         private bool autoForceFilm, autoOpenScript, bUseQAAC, bUseDGIndexNV, bUseDGIndexIM, bInput8Bit,
@@ -99,7 +100,7 @@ namespace MeGUI
         private ProgramSettings avimuxgui, avisynth, avisynthplugins, besplit, dgindexim, dgindex, dgindexnv,
                                 eac3to, fdkaac, ffmpeg, ffms, flac, lame, lsmash, mediainfo,
                                 megui_core, megui_help, megui_libs, megui_updater, mkvmerge, mp4box, neroaacenc, exhale, 
-                                oggenc, opus, pgcdemux, qaac, redist, tsmuxer, vsrip, x264, x265, xvid, bestsource, svtav1;
+                                oggenc, opus, pgcdemux, qaac, redist, tsmuxer, vsrip, x264, x265, xvid, bestsource, svtav1, ezcdAac;
         Dictionary<string, string> oRedistVersions;
         #endregion
         public MeGUISettings()
@@ -1186,6 +1187,26 @@ namespace MeGUI
             }
         }
 
+        /// <summary>
+        /// filename and full path of the EZCD-AAC executable
+        /// </summary>
+        public string EzcdAacPath
+        {
+            get
+            {
+                if (!File.Exists(ezcdAacPath))
+                    ezcdAacPath = Path.Combine(Path.GetDirectoryName(Application.ExecutablePath), @"tools\ezcd-aac\ezcd-aac.exe");
+                return ezcdAacPath;
+            }
+            set
+            {
+                if (!File.Exists(value))
+                    ezcdAacPath = Path.Combine(Path.GetDirectoryName(Application.ExecutablePath), @"tools\ezcd-aac\ezcd-aac.exe");
+                else
+                    ezcdAacPath = value;
+            }
+        }
+
         public bool UseDGIndexNV
         {
             get { return bUseDGIndexNV; }
@@ -1371,6 +1392,15 @@ namespace MeGUI
         {
             get { return exhale; }
             set { exhale = value; }
+        }
+
+        /// <summary>
+        /// program settings of the EZCD-AAC executable
+        /// </summary>
+        public ProgramSettings EzcdAac
+        {
+            get { return ezcdAac; }
+            set { ezcdAac = value; }
         }
 
         public ProgramSettings OggEnc
@@ -1664,6 +1694,8 @@ namespace MeGUI
                 neroaacenc = new ProgramSettings("neroaacenc");
             if (exhale == null)
                 exhale = new ProgramSettings("exhale");
+            if (ezcdAac == null)
+                ezcdAac = new ProgramSettings("ezcdaac");
             if (oggenc == null)
                 oggenc = new ProgramSettings("oggenc2");
             if (opus == null)
@@ -1745,6 +1777,7 @@ namespace MeGUI
             eac3to.DoNotDeleteFilesOnUpdate.Add(Path.Combine(Path.GetDirectoryName(Application.ExecutablePath), @"tools\eac3to\neroaacenc.exe"));
             fdkaac.UpdateInformation("fdkaac", "FDK-AAC", FDKAacPath);
             exhale.UpdateInformation("exhale", "Exhale", ExhalePath);
+            ezcdAac.UpdateInformation("ezcdaac", "EZCD-AAC", EzcdAacPath);
             if (!MainForm.Instance.Settings.UseFDKAac)
                 UpdateCacher.CheckPackage("fdkaac", false, false);
             ffmpeg.UpdateInformation("ffmpeg", "FFmpeg", Path.Combine(Path.GetDirectoryName(Application.ExecutablePath), @"tools\ffmpeg\ffmpeg.exe"));

@@ -1319,6 +1319,7 @@ namespace MeGUI
             RegisterEncoder(new OpusEncodingProvider());
             RegisterEncoder(new QaacEncodingProvider());
             RegisterEncoder(new THDEncodingProvider());
+            RegisterEncoder(new EzcdAacEncodingProvider());
         }
     }
     #endregion
@@ -1557,6 +1558,18 @@ namespace MeGUI
             supportedTypes.Add(AudioType.M4A);
             supportedTypes.Add(AudioType.MP4AAC);
             supportedEncoderTypes.Add(AudioEncoderType.EXHALE);
+        }
+    }
+
+    public class EzcdAacEncodingProvider : AudioEncodingProvider
+    {
+        public EzcdAacEncodingProvider()
+            : base()
+        {
+            supportedCodecs.Add(AudioCodec.AAC);
+            supportedTypes.Add(AudioType.M4A);
+            supportedTypes.Add(AudioType.MP4AAC);
+            supportedEncoderTypes.Add(AudioEncoderType.EZCDAAC);
         }
     }
     #endregion

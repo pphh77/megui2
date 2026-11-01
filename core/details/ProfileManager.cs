@@ -83,6 +83,7 @@ namespace MeGUI
             SafeRegister<FDKAACSettings, MeGUI.packages.audio.fdkaac.FDKAACConfigurationPanel>("Audio");
             SafeRegister<FFAACSettings, MeGUI.packages.audio.ffaac.FFAACConfigurationPanel>("Audio");
             SafeRegister<ExhaleSettings, MeGUI.packages.audio.exhale.ExhaleConfigurationPanel>("Audio");
+            SafeRegister<EZCDAACSettings, MeGUI.packages.audio.ezcdaac.EZCDAACConfigurationPanel>("Audio");
 
             SafeRegister<OneClickSettings, OneClickConfigPanel>();
             SafeRegister<AviSynthSettings, AviSynthProfileConfigPanel>();

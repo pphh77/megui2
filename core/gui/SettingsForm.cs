@@ -356,6 +356,7 @@ namespace MeGUI
                 settings.NeroAacEncPath = neroaacencLocation.Filename;
                 settings.FDKAacPath = fdkaacLocation.Filename;
                 settings.QAacPath = qaacLocation.Filename;
+                settings.EzcdAacPath = ezcdAacLocation.Filename;
                 settings.VideoExtension = videoExtension.Text;
                 settings.AudioExtension = audioExtension.Text;
 				settings.DefaultLanguage1 = defaultLanguage1.Text;
@@ -448,6 +449,7 @@ namespace MeGUI
                 neroaacencLocation.Filename = settings.NeroAacEncPath;
                 fdkaacLocation.Filename = settings.FDKAacPath;
                 qaacLocation.Filename = settings.QAacPath;
+                ezcdAacLocation.Filename = settings.EzcdAacPath;
                 sdSettings = settings.SourceDetectorSettings;
                 videoExtension.Text = settings.VideoExtension;
                 audioExtension.Text = settings.AudioExtension;

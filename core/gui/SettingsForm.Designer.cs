@@ -156,6 +156,9 @@ namespace MeGUI
             this.lblQaac = new System.Windows.Forms.Label();
             this.qaacLocation = new MeGUI.FileBar();
             this.useQAAC = new System.Windows.Forms.CheckBox();
+            this.groupBoxEzcdAac = new System.Windows.Forms.GroupBox();
+            this.lblEzcdAac = new System.Windows.Forms.Label();
+            this.ezcdAacLocation = new MeGUI.FileBar();
             this.groupBox7 = new System.Windows.Forms.GroupBox();
             this.useFDKAac = new System.Windows.Forms.CheckBox();
             this.lblFDK = new System.Windows.Forms.Label();
@@ -287,7 +290,7 @@ namespace MeGUI
             // 
             this.saveButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.saveButton.DialogResult = System.Windows.Forms.DialogResult.OK;
-            this.saveButton.Location = new System.Drawing.Point(473, 468);
+            this.saveButton.Location = new System.Drawing.Point(473, 531);
             this.saveButton.Name = "saveButton";
             this.saveButton.Size = new System.Drawing.Size(48, 23);
             this.saveButton.TabIndex = 2;
@@ -297,7 +300,7 @@ namespace MeGUI
             // 
             this.cancelButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.cancelButton.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-            this.cancelButton.Location = new System.Drawing.Point(544, 468);
+            this.cancelButton.Location = new System.Drawing.Point(544, 531);
             this.cancelButton.Name = "cancelButton";
             this.cancelButton.Size = new System.Drawing.Size(48, 23);
             this.cancelButton.TabIndex = 3;
@@ -390,7 +393,7 @@ namespace MeGUI
             this.tabControl1.Location = new System.Drawing.Point(0, 0);
             this.tabControl1.Name = "tabControl1";
             this.tabControl1.SelectedIndex = 0;
-            this.tabControl1.Size = new System.Drawing.Size(597, 461);
+            this.tabControl1.Size = new System.Drawing.Size(597, 524);
             this.tabControl1.TabIndex = 0;
             // 
             // tabPage1
@@ -403,7 +406,7 @@ namespace MeGUI
             this.tabPage1.Location = new System.Drawing.Point(4, 22);
             this.tabPage1.Name = "tabPage1";
             this.tabPage1.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage1.Size = new System.Drawing.Size(589, 435);
+            this.tabPage1.Size = new System.Drawing.Size(589, 498);
             this.tabPage1.TabIndex = 0;
             this.tabPage1.Text = "Main";
             this.tabPage1.UseVisualStyleBackColor = true;
@@ -702,7 +705,7 @@ namespace MeGUI
             this.tabPage3.Controls.Add(this.autoModeGroupbox);
             this.tabPage3.Location = new System.Drawing.Point(4, 22);
             this.tabPage3.Name = "tabPage3";
-            this.tabPage3.Size = new System.Drawing.Size(589, 435);
+            this.tabPage3.Size = new System.Drawing.Size(589, 498);
             this.tabPage3.TabIndex = 2;
             this.tabPage3.Text = "Extended";
             this.tabPage3.UseVisualStyleBackColor = true;
@@ -1075,7 +1078,7 @@ namespace MeGUI
             this.tabPage4.Location = new System.Drawing.Point(4, 22);
             this.tabPage4.Name = "tabPage4";
             this.tabPage4.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage4.Size = new System.Drawing.Size(589, 435);
+            this.tabPage4.Size = new System.Drawing.Size(589, 498);
             this.tabPage4.TabIndex = 3;
             this.tabPage4.Text = "Worker/Job/Queue";
             this.tabPage4.UseVisualStyleBackColor = true;
@@ -1377,6 +1380,7 @@ namespace MeGUI
             // tabPage2
             // 
             this.tabPage2.Controls.Add(this.groupBox14);
+            this.tabPage2.Controls.Add(this.groupBoxEzcdAac);
             this.tabPage2.Controls.Add(this.groupBox7);
             this.tabPage2.Controls.Add(this.groupBox6);
             this.tabPage2.Controls.Add(this.groupBox5);
@@ -1385,7 +1389,7 @@ namespace MeGUI
             this.tabPage2.Location = new System.Drawing.Point(4, 22);
             this.tabPage2.Name = "tabPage2";
             this.tabPage2.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage2.Size = new System.Drawing.Size(589, 435);
+            this.tabPage2.Size = new System.Drawing.Size(589, 498);
             this.tabPage2.TabIndex = 1;
             this.tabPage2.Text = "External Programs";
             this.tabPage2.UseVisualStyleBackColor = true;
@@ -1434,6 +1438,38 @@ namespace MeGUI
             this.useQAAC.Text = "Enable QAAC";
             this.useQAAC.UseVisualStyleBackColor = true;
             this.useQAAC.CheckedChanged += new System.EventHandler(this.useQAAC_CheckedChanged);
+            // 
+            // groupBoxEzcdAac
+            // 
+            this.groupBoxEzcdAac.Controls.Add(this.lblEzcdAac);
+            this.groupBoxEzcdAac.Controls.Add(this.ezcdAacLocation);
+            this.groupBoxEzcdAac.Location = new System.Drawing.Point(4, 182);
+            this.groupBoxEzcdAac.Name = "groupBoxEzcdAac";
+            this.groupBoxEzcdAac.Size = new System.Drawing.Size(577, 51);
+            this.groupBoxEzcdAac.TabIndex = 49;
+            this.groupBoxEzcdAac.TabStop = false;
+            this.groupBoxEzcdAac.Text = " EZCD-AAC ";
+            // 
+            // lblEzcdAac
+            // 
+            this.lblEzcdAac.AutoSize = true;
+            this.lblEzcdAac.Location = new System.Drawing.Point(11, 25);
+            this.lblEzcdAac.Name = "lblEzcdAac";
+            this.lblEzcdAac.Size = new System.Drawing.Size(47, 13);
+            this.lblEzcdAac.TabIndex = 45;
+            this.lblEzcdAac.Text = "Location";
+            // 
+            // ezcdAacLocation
+            // 
+            this.ezcdAacLocation.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.ezcdAacLocation.Filename = "";
+            this.ezcdAacLocation.Filter = "EZCD-AAC|ezcd-aac.exe";
+            this.ezcdAacLocation.Location = new System.Drawing.Point(64, 21);
+            this.ezcdAacLocation.Margin = new System.Windows.Forms.Padding(4);
+            this.ezcdAacLocation.Name = "ezcdAacLocation";
+            this.ezcdAacLocation.Size = new System.Drawing.Size(509, 23);
+            this.ezcdAacLocation.TabIndex = 44;
             // 
             // groupBox7
             // 
@@ -1485,7 +1521,7 @@ namespace MeGUI
             // 
             this.groupBox6.Controls.Add(this.chk64Bit);
             this.groupBox6.Controls.Add(this.chx264ExternalMuxer);
-            this.groupBox6.Location = new System.Drawing.Point(8, 326);
+            this.groupBox6.Location = new System.Drawing.Point(8, 383);
             this.groupBox6.Name = "groupBox6";
             this.groupBox6.Size = new System.Drawing.Size(577, 103);
             this.groupBox6.TabIndex = 33;
@@ -1566,7 +1602,7 @@ namespace MeGUI
             // 
             this.groupBox4.Controls.Add(this.btnClearMP4TempDirectory);
             this.groupBox4.Controls.Add(this.tempDirMP4);
-            this.groupBox4.Location = new System.Drawing.Point(7, 266);
+            this.groupBox4.Location = new System.Drawing.Point(7, 323);
             this.groupBox4.Name = "groupBox4";
             this.groupBox4.Size = new System.Drawing.Size(578, 54);
             this.groupBox4.TabIndex = 31;
@@ -1602,7 +1638,7 @@ namespace MeGUI
             this.vobGroupBox.Controls.Add(this.cbAutoLoadDG);
             this.vobGroupBox.Controls.Add(this.forceFilmPercentage);
             this.vobGroupBox.Controls.Add(this.autoForceFilm);
-            this.vobGroupBox.Location = new System.Drawing.Point(8, 184);
+            this.vobGroupBox.Location = new System.Drawing.Point(8, 241);
             this.vobGroupBox.Name = "vobGroupBox";
             this.vobGroupBox.Size = new System.Drawing.Size(577, 76);
             this.vobGroupBox.TabIndex = 29;
@@ -1700,9 +1736,10 @@ namespace MeGUI
             // helpButton1
             // 
             this.helpButton1.ArticleName = "Settings";
+            this.helpButton1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.helpButton1.AutoSize = true;
             this.helpButton1.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
-            this.helpButton1.Location = new System.Drawing.Point(7, 468);
+            this.helpButton1.Location = new System.Drawing.Point(7, 531);
             this.helpButton1.Margin = new System.Windows.Forms.Padding(4);
             this.helpButton1.Name = "helpButton1";
             this.helpButton1.Size = new System.Drawing.Size(38, 23);
@@ -1712,7 +1749,7 @@ namespace MeGUI
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(96F, 96F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi;
-            this.ClientSize = new System.Drawing.Size(597, 496);
+            this.ClientSize = new System.Drawing.Size(597, 559);
             this.Controls.Add(this.helpButton1);
             this.Controls.Add(this.tabControl1);
             this.Controls.Add(this.cancelButton);
@@ -1912,5 +1949,8 @@ namespace MeGUI
         private System.Windows.Forms.GroupBox groupBox14;
         private System.Windows.Forms.Label lblQaac;
         private FileBar qaacLocation;
+        private System.Windows.Forms.GroupBox groupBoxEzcdAac;
+        private System.Windows.Forms.Label lblEzcdAac;
+        private FileBar ezcdAacLocation;
     }
 }
